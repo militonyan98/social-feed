@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Post as AppPost;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use App\Post;
+use App\User;
 
 class HomeController extends Controller
 {
-
     
     /**
      * Create a new controller instance.
@@ -18,6 +19,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        $this->post = new Post;
+        $this->user = new User;
         $this->middleware('auth');
     }
 
@@ -28,25 +31,24 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $posts = DB::table('posts')
-                ->join('users', 'users.id', '=', 'posts.user_id')
+        $posts = $this->post::join('users', 'users.id', '=', 'posts.user_id')
+                ->orderBy('posts.id')
                 ->get();
         return view('home', ['posts'=>$posts]);
     }
 
     public function addPost(Request $request){
-        $post = $request->input('post_body');
-        $user_id = Auth::id();
-        $data = array('post_body'=>$post, 'user_id'=>$user_id);
-        DB::table('posts')->insert($data);
+        $this->post->post_body = $request->post_body;
+        $this->post->user_id = auth()->id();
+        $this->post->save();
 
         return redirect()->action('HomeController@index');
     }
     
     public function userPosts($id){
-        $userPosts = DB::table('posts')
-                    ->join('users', 'users.id', '=', 'posts.user_id')
+        $userPosts = $this->post::join('users', 'users.id', '=', 'posts.user_id')
                     ->where('user_id', "=", $id)
+                    ->orderBy('posts.id')
                     ->get();
         return view('user-posts', ['userPosts' => $userPosts]);
     }
