@@ -38,11 +38,17 @@ class HomeController extends Controller
     }
 
     public function addPost(Request $request){
-        $this->post->title = $request->title;
-        $this->post->post_body = $request->post_body;
-        $this->post->user_id = auth()->id();
-        $this->post->save();
-
+        $validatedData = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'post_body' => 'required',
+        ]);
+        if($validatedData){
+            $this->post->title = $request->title;
+            $this->post->post_body = $request->post_body;
+            $this->post->user_id = auth()->id();
+            $this->post->save();
+        }
+        
         return redirect()->action('HomeController@index');
     }
     

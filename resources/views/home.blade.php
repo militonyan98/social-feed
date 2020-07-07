@@ -7,6 +7,16 @@
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                
                 <form method="POST" action="/home/addPost" style="margin: 20px 20px;">
                     @csrf
 
