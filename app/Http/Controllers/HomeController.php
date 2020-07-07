@@ -38,6 +38,7 @@ class HomeController extends Controller
     }
 
     public function addPost(Request $request){
+        $this->post->title = $request->title;
         $this->post->post_body = $request->post_body;
         $this->post->user_id = auth()->id();
         $this->post->save();
