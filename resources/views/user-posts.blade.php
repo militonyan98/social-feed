@@ -10,7 +10,7 @@
                     <div class="row">
                     <h3 class="col-md-11">{{ $userPosts[0]->name }}</h3>
                     <a class="btn btn-primary col-md-1" href="/home">Back</a>
-                </div>
+                    </div>
                 </div>
 
                 <div class="container" style="margin: 20px 20px; width:auto;">

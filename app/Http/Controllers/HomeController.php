@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Post;
-use App\User;
 
 class HomeController extends Controller
 {
@@ -20,7 +19,6 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->post = new Post;
-        $this->user = new User;
         $this->middleware('auth');
     }
 
@@ -31,8 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $posts = $this->post::join('users', 'users.id', '=', 'posts.user_id')
-                ->orderBy('posts.id')
+        $posts = $this->post::with('user')
+                ->orderBy('id')
                 ->get();
         return view('home', ['posts'=>$posts]);
     }
@@ -40,7 +38,7 @@ class HomeController extends Controller
     public function addPost(Request $request){
         $validatedData = $request->validate([
             'title' => 'required|unique:posts|max:255',
-            'post_body' => 'required',
+            'post_body' => 'required'
         ]);
         if($validatedData){
             $this->post->title = $request->title;
@@ -58,5 +56,27 @@ class HomeController extends Controller
                     ->orderBy('posts.id')
                     ->get();
         return view('user-posts', ['userPosts' => $userPosts]);
+    }
+
+    public function updatePost(Request $request){
+        $post = $this->post::find($request->id);
+        if($post->user_id==auth()->id()){
+            $validatedData = $request->validate([
+                'title' => 'required|unique:posts|max:255',
+                'post_body' => 'required'
+            ]);
+        }
+
+        if($validatedData){
+            $post->title = $request->title;
+            $post->post_body = $request->post_body;
+            $post->save();
+        }
+
+        return redirect()->action('HomeController@index');
+    }
+    
+    public function edit($id){
+        return view('edit')->with('post', $this->post::find($id));
     }
 }

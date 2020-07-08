@@ -19,8 +19,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/home/addPost', 'HomeController@addPost')->name('addPost');
-
-Route::get('/home/userPosts/{id}', 'HomeController@userPosts')->name('userPosts');
+    Route::post('/home/addPost', 'HomeController@addPost')->name('addPost');
+    
+    Route::get('/home/userPosts/{id}', 'HomeController@userPosts')->name('userPosts');
+    
+    Route::get('/home/edit/{id}', 'HomeController@edit')->name('edit');
+    
+    Route::post('/home/updatePost', 'HomeController@updatePost')->name('update');
+});
