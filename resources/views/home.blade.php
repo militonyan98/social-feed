@@ -34,7 +34,7 @@
 
                     <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success">
                                     {{ __('Post') }}
                                 </button>
                             </div>
@@ -51,7 +51,10 @@
                             <div class="card-body" style="margin-top: -20px;"><p>{{ $post->post_body }}</p></div>
                             <span class="time_date card-body" style="margin-top: -50px; font-size: .85em; color: dimgray;">{{ $post->created_at }}</span>
                             @if($post->canEdit())
-                                <div class="card-body"><a value="Edit" class="btn btn-secondary" href="{{ route('edit', $post->id) }}">Edit</a></div>
+                                <div class="col-md-8 offset-md-9" style="margin-bottom: 5px;">
+                                    <a value="Edit" class="btn btn-primary" href="{{ route('edit', $post->id) }}">Edit</a>
+                                    <a value="Delete" class="btn btn-danger" href="{{ route('delete', $post->id) }}">Delete</a>
+                                </div>
                             @endif
                                 
                         </div>

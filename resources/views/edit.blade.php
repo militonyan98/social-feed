@@ -39,8 +39,8 @@
 
                     <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <input type="submit" value="Update" name="Update" class="btn btn-primary">
-                                <a class="btn btn-primary" href="/home">Cancel</a>
+                                <input type="submit" value="Update" name="Update" class="btn btn-success">
+                                <a class="btn btn-secondary" href="/home">Cancel</a>
                             </div>
                     </div>
                 </form>

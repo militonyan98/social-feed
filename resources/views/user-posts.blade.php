@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <div class="row">
                     <h3 class="col-md-11">{{ $userPosts->name }}</h3>
-                    <a class="btn btn-primary col-md-1" href="/home">Back</a>
+                    <a class="btn btn-dark col-md-1" href="/home">Back</a>
                     </div>
                 </div>
 
@@ -21,7 +21,10 @@
                             <div class="card-body"><p>{{ $post->post_body }}</p></div>
                             <span class="time_date card-body" style="margin-top: -50px; font-size: .85em; color: dimgray;">{{ $post->created_at }}</span>
                             @if($post->canEdit())
-                                <div class="card-body"><a value="Edit" class="btn btn-secondary" style="margin-bottom: -15px;" href="{{ route('edit', $post->id) }}">Edit</a></div>
+                                <div class="col-md-8 offset-md-9" style="margin-bottom: 5px;">
+                                    <a value="Edit" class="btn btn-primary" href="{{ route('edit', $post->id) }}">Edit</a>
+                                    <a value="Delete" class="btn btn-danger" href="{{ route('delete', $post->id) }}">Delete</a>
+                                </div>
                             @endif
                             </div>
                     @endforeach
