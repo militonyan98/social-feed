@@ -22,11 +22,11 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::post('/home/addPost', 'HomeController@addPost')->name('addPost');
+    Route::post('/post/store', 'PostController@store')->name('store');
     
-    Route::get('/home/userPosts/{id}', 'HomeController@userPosts')->name('userPosts');
+    Route::get('/post/userPosts/{id}', 'PostController@userPosts')->name('userPosts');
     
-    Route::get('/home/edit/{id}', 'HomeController@edit')->name('edit');
+    Route::get('/post/edit/{id}', 'PostController@edit')->name('edit');
     
-    Route::post('/home/updatePost', 'HomeController@updatePost')->name('update');
+    Route::post('/post/update', 'PostController@update')->name('update');
 });

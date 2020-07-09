@@ -8,18 +8,22 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                    <h3 class="col-md-11">{{ $userPosts[0]->name }}</h3>
+                    <h3 class="col-md-11">{{ $userPosts->name }}</h3>
                     <a class="btn btn-primary col-md-1" href="/home">Back</a>
                     </div>
                 </div>
 
                 <div class="container" style="margin: 20px 20px; width:auto;">
-                    @foreach ($userPosts as $post)
+                    @foreach ($userPosts->posts as $post)
                         <div class="card" style="margin: 10px 10px">
+                        <div class="d-none" value="{{$post->id}}"></div>
                             <div class="card-body" style=" margin-bottom: -20px;"><h5 style="color: #414573;">{{ $post->title }}</h5></div>
                             <div class="card-body"><p>{{ $post->post_body }}</p></div>
                             <span class="time_date card-body" style="margin-top: -50px; font-size: .85em; color: dimgray;">{{ $post->created_at }}</span>
-                        </div>
+                            @if($post->canEdit())
+                                <div class="card-body"><a value="Edit" class="btn btn-secondary" style="margin-bottom: -15px;" href="{{ route('edit', $post->id) }}">Edit</a></div>
+                            @endif
+                            </div>
                     @endforeach
                 </div>
 

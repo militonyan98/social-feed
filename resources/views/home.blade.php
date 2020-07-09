@@ -17,7 +17,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="/home/addPost" style="margin: 20px 20px;">
+                <form method="POST" action="{{ route('store') }}" style="margin: 20px 20px;">
                     @csrf
 
                     <div class="form-group row">
@@ -46,13 +46,12 @@
                     @foreach ($posts as $post)
                     <div class="container" style="margin: 20px 20px; width:auto;">
                         <div class="card">
-                            <div class="card-body"><h3 style="font-weight: bold;"><a href="/home/userPosts/{{$post->user_id}}">{{ $post->user->name }}</a></h3></div>
+                            <div class="card-body"><h3 style="font-weight: bold;"><a href="{{ route('userPosts', $post->user_id) }}">{{ $post->user->name }}</a></h3></div>
                             <div class="card-body" style="margin-top: -20px; margin-bottom: -20px;"><h5 style="color: #414573;">{{ $post->title }}</h5></div>
                             <div class="card-body" style="margin-top: -20px;"><p>{{ $post->post_body }}</p></div>
                             <span class="time_date card-body" style="margin-top: -50px; font-size: .85em; color: dimgray;">{{ $post->created_at }}</span>
-                            @if($post->user_id==auth()->id())
-                                {{$post->id}};
-                                <div class="card-body"><a value="Edit" class="btn btn-secondary" href="home/edit/{{$post->id}}">Edit</a></div>
+                            @if($post->canEdit())
+                                <div class="card-body"><a value="Edit" class="btn btn-secondary" href="{{ route('edit', $post->id) }}">Edit</a></div>
                             @endif
                                 
                         </div>

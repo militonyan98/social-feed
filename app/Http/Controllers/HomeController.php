@@ -18,7 +18,6 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->post = new Post;
         $this->middleware('auth');
     }
 
@@ -29,54 +28,58 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $posts = $this->post::with('user')
+        $posts = Post::with('user')
                 ->orderBy('id')
                 ->get();
         return view('home', ['posts'=>$posts]);
     }
 
-    public function addPost(Request $request){
-        $validatedData = $request->validate([
-            'title' => 'required|unique:posts|max:255',
-            'post_body' => 'required'
-        ]);
-        if($validatedData){
-            $this->post->title = $request->title;
-            $this->post->post_body = $request->post_body;
-            $this->post->user_id = auth()->id();
-            $this->post->save();
-        }
+    // public function addPost(Request $request){
+    //     $validatedData = $request->validate([
+    //         'title' => 'required|unique:posts|max:255',
+    //         'post_body' => 'required'
+    //     ]);
+    //     if($validatedData){
+    //         $post = new Post;
+    //         $post->title = $request->title;
+    //         $post->post_body = $request->post_body;
+    //         $post->user_id = auth()->id();
+    //         $post->save();
+    //     }
         
-        return redirect()->action('HomeController@index');
-    }
+    //     return redirect()->action('HomeController@index');
+    // }
     
-    public function userPosts($id){
-        $userPosts = $this->post::join('users', 'users.id', '=', 'posts.user_id')
-                    ->where('user_id', "=", $id)
-                    ->orderBy('posts.id')
-                    ->get();
-        return view('user-posts', ['userPosts' => $userPosts]);
-    }
+    // public function userPosts($id){
+    //     $userPosts = User::with('posts')->find($id);
+    //     return view('user-posts', ['userPosts' => $userPosts]);
+    // }
 
-    public function updatePost(Request $request){
-        $post = $this->post::find($request->id);
-        if($post->user_id==auth()->id()){
-            $validatedData = $request->validate([
-                'title' => 'required|unique:posts|max:255',
-                'post_body' => 'required'
-            ]);
-        }
+    // public function updatePost(Request $request){
+    //     $post = Post::findOrFail($request->id);
+    //     if(!$post->canEdit()){
+    //         abort(404);
+    //     }
 
-        if($validatedData){
-            $post->title = $request->title;
-            $post->post_body = $request->post_body;
-            $post->save();
-        }
+    //     $validatedData = $request->validate([
+    //         'title' => "required|unique:posts,title,{$request->id}|max:255",
+    //         'post_body' => 'required'
+    //     ]);
 
-        return redirect()->action('HomeController@index');
-    }
+    //     if($validatedData){
+    //         $post->title = $request->title;
+    //         $post->post_body = $request->post_body;
+    //         $post->save();
+    //     }
+
+    //     return redirect()->action('HomeController@index');
+    // }
     
-    public function edit($id){
-        return view('edit')->with('post', $this->post::find($id));
-    }
+    // public function edit($id){
+    //     $post = Post::findOrFail($id);
+    //     if(!$post->canEdit()){
+    //         abort(404);
+    //     }
+    //     return view('edit')->with('post', $post);
+    // }
 }

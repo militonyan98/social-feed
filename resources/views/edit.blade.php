@@ -22,7 +22,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="/home/updatePost" style="margin: 20px 20px;">
+                <form method="POST" action="{{ route('update') }}" style="margin: 20px 20px;">
                     @csrf
                     <input type="hidden" name="id" value="{{ $post->id }}">
                     <div class="form-group row">
